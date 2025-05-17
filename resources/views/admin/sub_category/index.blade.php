@@ -181,14 +181,16 @@
 						Swal.fire({
                         icon: 'error',
                         title: 'Server error',
-                        text: 'Failed to delete category.<br/> Please try again later.',
+                        html: 'Failed to delete category.<br/>Please try again later.',
                         timer: 5000,
                         toast: true,
                         position: 'top-end',
                         showConfirmButton: false,
                         timerProgressBar: true,
                         background: '#f8d7da',
-                        });
+                        }).then(() => {
+							window.location.href = '{{ route("sub-categories.index") }}';
+						});
 					}
 				});
 			}

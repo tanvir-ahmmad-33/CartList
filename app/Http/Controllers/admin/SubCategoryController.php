@@ -51,7 +51,7 @@ class SubCategoryController extends Controller
     }
 
     public function edit($id) {
-        $subCategory = $this->subCatagoryService->subCateryWithId($id);
+        $subCategory = $this->subCatagoryService->vaildSubCategory($id);
 
         if($subCategory) {
             $categories = $this->subCatagoryService->getCategory();

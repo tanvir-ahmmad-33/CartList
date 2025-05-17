@@ -23,9 +23,6 @@ class SubCategoryService {
         return SubCategory::create($data);
     }
 
-    public function subCateryWithId($id) {
-        return SubCategory::find($id);
-    }
 
     public function vaildSubCategory($id) {
         return SubCategory::find($id);

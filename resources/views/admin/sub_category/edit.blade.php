@@ -144,7 +144,10 @@
                         position: 'top-end',
                         background: '#f8d7da', 
                         showConfirmButton: false,
-                        timerProgressBar: true
+                        timerProgressBar: true,
+                        didClose: () => {
+                            window.location.href = '{{ route("sub-categories.index") }}';
+                        }
                     });
                 } else if (jqXHR.status === 500) {
                     Swal.fire({
