@@ -10,7 +10,7 @@ class SubCategoryService {
         return SubCategory::leftJoin('categories', 'sub_categories.category_id', '=', 'categories.id')
             ->select('sub_categories.*', 'categories.name as category_name')
             ->search()
-            ->latest()
+            ->latest('id')
             ->paginate($perPage);
     }
     

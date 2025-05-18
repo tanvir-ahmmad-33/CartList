@@ -6,8 +6,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\admin\HomeController;
 use App\Http\Controllers\admin\CategoryController;
 use App\Http\Controllers\admin\AdminLoginController;
+use App\Http\Controllers\admin\BrandController;
 use App\Http\Controllers\admin\SubCategoryController;
 use App\Http\Controllers\admin\TempImagesController;
+use App\Models\Brand;
 
 /*
 |--------------------------------------------------------------------------
@@ -43,6 +45,14 @@ Route::group(['prefix' => 'admin'], function() {
         Route::get('/sub-categories/{id}/edit', [SubCategoryController::class, 'edit'])->name('sub-categories.edit');
         Route::put('/sub-categories/{id}', [SubCategoryController::class, 'update'])->name('sub-categories.update');
         Route::delete('/sub-categories/{id}', [SubCategoryController::class, 'destroy'])->name('sub-categories.destroy');
+
+        // brands routes
+        Route::get('/brands', [BrandController::class, 'index'])->name('brands.index');
+        Route::get('/brands/create', [BrandController::class, 'create'])->name('brands.create');
+        Route::post('/brands', [BrandController::class, 'store'])->name('brands.store');
+        Route::get('/brands/{id}/edit', [BrandController::class, 'edit'])->name('brands.edit');
+        Route::put('/brands/{id}', [BrandController::class, 'update'])->name('brands.update');
+        Route::delete('/brands/{id}', [BrandController::class, 'destroy'])->name('brands.destroy');
         
 
         // image upload
