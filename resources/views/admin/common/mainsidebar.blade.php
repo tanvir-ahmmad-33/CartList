@@ -35,7 +35,7 @@
 								</a>
 							</li>
 							<li class="nav-item">
-								<a href="{{ route('brands.create') }}" 
+								<a href="{{ route('brands.index') }}" 
 								class="nav-link {{ (Route::currentRouteName() == 'brands.index'
 								                || Route::currentRouteName() == 'brands.create'
 								                || Route::currentRouteName() == 'brands.edit') ? 'text-success' : '' }}">

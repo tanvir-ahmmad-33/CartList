@@ -16,7 +16,10 @@ class BrandController extends Controller
     }
 
 
-    public function index() {} 
+    public function index() {
+        $brands = $this->brandService->getBrands();
+        return view('admin.brands.index', ['title' => 'CartList | Brand', 'brands' => $brands]);
+    } 
 
 
     public function create() {

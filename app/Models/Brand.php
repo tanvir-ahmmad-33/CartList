@@ -14,4 +14,15 @@ class Brand extends Model
         'slug',
         'status',
     ];
+
+    public function scopeSearch($query)
+    {
+        $request = request();
+
+        if ($request->has("keyword") && $request->keyword !== '') {
+            $query->where('name', 'like', '%' . $request->keyword . '%');
+        }
+        
+        return $query;
+    }
 }
