@@ -43,6 +43,14 @@
 			</div>
 		@endif
 
+		@if (session('Brand_not_found'))
+	        <div id="BrandMessage" class="alert alert-danger text-center" role="alert">
+                <i class="fas fa-times-circle text-dark mr-2" style="font-size: 2rem;"></i>
+                <strong class="mr-2" style="font-size: 2rem;">Error!</strong>  <br>
+                <span>Brand isn't Found</span>
+			</div>
+		@endif
+
 		<div class="card">
 			<form action="" method="get">
 			    <div class="card-header">
@@ -100,7 +108,7 @@
                             @endforeach
                         @else
                         <tr>
-                            <td>No Sub-categories Found.</td>
+                            <td>No Brand Found.</td>
                         </tr>
                         @endif
 					</tbody>
@@ -130,5 +138,69 @@
 		    }, 4000);
         }
     });
+
+	$(document).on('click', '.editbtn', function(e) {
+		e.preventDefault();
+
+		console.log("edit button");
+
+		let brandId = $(this).attr('data-id');
+		let brandName = $(this).attr('data-name');
+
+		Swal.fire({
+            title: 'Are you sure?',
+            html: `Do you want to edit the brand <br><strong>${brandName} ?</strong><br>`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes',
+            cancelButtonText: 'No',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                let editUrl = "{{ route('brands.edit', ['id' => ':id']) }}".replace(':id', brandId);
+                window.location.href = editUrl;
+            }
+        });
+	});
+
+	$(document).on('click', '.deletebtn', function(e) {
+		e.preventDefault();
+
+		let brandId = $(this).attr('data-id');
+		let brandName = $(this).attr('data-name');
+
+		Swal.fire({
+            title: 'Are you sure?',
+            html: `Do you want to delete the brand <br><strong>${brandName} ?</strong><br>`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'No, cancel',
+            reverseButtons: true
+        }).then((result) => {
+			if (result.isConfirmed) {
+				$.ajax({
+					url: "{{ route('brands.destroy', ['id' => ':id']) }}".replace(':id', brandId),
+					type: 'DELETE',
+					success: function(result) {
+						window.location.href = "{{ route('brands.index') }}";
+					}, error: function(jqXHR, textStatus, errorThrown) {
+						Swal.fire({
+                        icon: 'error',
+                        title: 'Server error',
+                        html: 'Failed to delete brand.<br/>Please try again later.',
+                        timer: 5000,
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timerProgressBar: true,
+                        background: '#f8d7da',
+                        }).then(() => {
+							window.location.href = '{{ route("brands.index") }}';
+						});
+					}
+				});
+			}
+		});
+	});
 </script>
 @endpush
