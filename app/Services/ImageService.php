@@ -4,11 +4,14 @@ namespace App\Services;
 use App\Models\TempImage;
 
 class ImageService {
-    public function saveImage($newName) {
-        $tempImage = new TempImage();
-        $tempImage->name = $newName;
-        $tempImage->save();
+    public function saveImage($image) {
+        $fileName = now()->format('ymd-his') . '.' . $image->getClientOriginalExtension();
 
-        return $tempImage;
+        $destinationPath = public_path('admin/temp');
+        $image->move($destinationPath, $fileName);
+
+        return TempImage::create([
+            'name' => $fileName,
+        ]);
     }
 }

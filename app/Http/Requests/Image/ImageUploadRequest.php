@@ -1,9 +1,7 @@
 <?php
 
-namespace App\Http\Requests\Category;
+namespace App\Http\Requests\Image;
 
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Http\UploadedFile;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ImageUploadRequest extends FormRequest
@@ -24,22 +22,21 @@ class ImageUploadRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'image' => 'required|image|mimes:jpeg,png,gif,jpg|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,gif,jpg|max:2048',
         ];
     }
 
     public function messages()
     {
         return [
-            'image.required' => 'Please upload an image.',
             'image.image' => 'The file must be an image.',
             'image.mimes' => 'Only jpeg, png, gif, and jpg images are allowed.',
             'image.max' => 'The image size must not exceed 2MB.',
         ];
     }
 
-    public function getCategoryImage()
+    public function getImage()
     {
-        return $this->validated()['image'] ?? null;
+        return $this->file('image');
     }
 }

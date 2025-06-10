@@ -13,6 +13,7 @@ class Category extends Model
         'name',
         'slug',
         'image',
+        'status'
     ];
 
     public function scopeSearch($query)

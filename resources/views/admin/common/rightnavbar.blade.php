@@ -5,7 +5,26 @@
 </ul>
 <div class="navbar-nav pl-2">
 	<ol class="breadcrumb p-0 m-0 bg-white">
-		<li class="breadcrumb-item active">Dashboard</li>
+		<li class="breadcrumb-item active text-dark">
+			@if (Route::currentRouteName() == 'admin.dashboard') <span class="text-success">Dashboard</span> @endif
+
+			@if (Route::currentRouteName() == 'categories.index') <span class="text-success">Categories</span> | List @endif
+			@if (Route::currentRouteName() == 'categories.create') <span class="text-success">Categories</span> | Create @endif
+
+			@if (Route::currentRouteName() == 'sub-categories.index') <span class="text-success">Subcategories</span> | List @endif
+			@if (Route::currentRouteName() == 'sub-categories.create') <span class="text-success">Subcategories</span> | Create @endif
+			@if (Route::currentRouteName() == 'sub-categories.edit') <span class="text-success">Subcategories</span> | Edit @endif
+
+			@if (Route::currentRouteName() == 'brands.index') <span class="text-success">Brands</span> | List @endif
+			@if (Route::currentRouteName() == 'brands.create') <span class="text-success">Brands</span> | Create @endif
+			@if (Route::currentRouteName() == 'brands.edit') <span class="text-success">Brands</span> | Edit @endif
+
+			@if (Route::currentRouteName() == 'products.index') <span class="text-success">Products</span> | List @endif
+			@if (Route::currentRouteName() == 'products.create') <span class="text-success">Products</span> | Create @endif
+			@if (Route::currentRouteName() == 'products.edit') <span class="text-success">Products</span> | Edit @endif
+
+			<!-- {{ Route::currentRouteName() }} -->
+		</li>
 	</ol>
 </div>
 				

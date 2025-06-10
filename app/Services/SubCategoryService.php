@@ -37,4 +37,10 @@ class SubCategoryService {
         return SubCategory::find($id)
             ->delete();
     }
+
+    public function getSubCategoryUsingCategoryId($id) {
+        return SubCategory::where('category_id', $id)
+            ->orderBy('name', 'ASC')
+            ->get();
+    }
 }

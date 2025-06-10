@@ -44,7 +44,7 @@ class SubCategoryController extends Controller
 
             session()->flash('sub_category_created', true);
         } else {
-            $response['message'] = 'Failed to create category. Please try again later.';
+            $response['message'] = 'Failed to create sub-category. Please try again later.';
         }
 
         return response()->json($response);

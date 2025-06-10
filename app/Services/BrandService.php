@@ -13,6 +13,11 @@ class BrandService{
     }
 
 
+    public function getAllBrand() {
+        return Brand::get();
+    }
+
+
     public function createBrand(array $data) {
         return Brand::create($data);
     }

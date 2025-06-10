@@ -2,8 +2,9 @@
 
 namespace App\Http\Requests\Category;
 
-use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Foundation\Http\FormRequest;
 
 class StoreCategoryRequest extends FormRequest
 {
@@ -22,11 +23,15 @@ class StoreCategoryRequest extends FormRequest
      */
     public function rules(): array
     {
+        $categoryId = $this->route('id');
         return [
             'name' => 'required',
-            'slug' => 'required|unique:categories',
+            'slug' => [
+                'required',
+                Rule::unique('categories')->ignore($categoryId),
+            ],
             'image_id' => 'nullable|exists:temp_images,id',
-            'image_extension' => 'nullable|string',
+            'status' => 'required',
         ];
     }
 
@@ -37,23 +42,25 @@ class StoreCategoryRequest extends FormRequest
             'slug.required' => 'The category slug is required.',
             'slug.unique' => 'The category slug must be unique.',
             'image_id.exists' => 'The selected image is invalid.',
-            'image_id.exists' => 'The selected image is invalid.',
+            'status.required' => 'Status is required.',
         ];
     }
 
     public function getCategoryData() {
         $data = $this->validated();
 
-        if ($this->has('image_id') && $this->input('image_id')) {
-            $data['image_id'] = $this->input('image_id');
+        
+        if (isset($data['image_id'])) {
+            $data['image'] = $data['image_id'];
+            unset($data['image_id']);
         }
 
-        if($this->has('image_extension') && $this->input('image_extension')) {
-            $data['image_extension'] = $this->input('image_extension');
-        }
 
         if(URL::current() == route('categories.store'))  {
             $data['created_at'] = date('Y:m:d H:i:s');
+        } else {
+            $data['updated_at'] = date('Y:m:d H:i:s');
+            unset($data['id']);
         }
 
         return $data;

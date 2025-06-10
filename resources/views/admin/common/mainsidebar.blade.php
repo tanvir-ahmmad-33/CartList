@@ -1,6 +1,6 @@
 <aside class="main-sidebar sidebar-light-primary elevation-4">
 				<!-- Brand Logo -->
-				<a href="#" class="brand-link">
+				<a href="{{ route('admin.dashboard') }}" class="brand-link">
 					<img src="{{ asset('assets/admin-assets/img/AdminLTELogo.png') }}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
 					<span class="brand-text text-dark fw-bolder">Cart List</span>
 				</a>
@@ -18,9 +18,14 @@
 								</a>																
 							</li>
 							<li class="nav-item">
-								<a href="{{ route('categories.index') }}" class="nav-link {{ ( Route::currentRouteName() == 'categories.index' || Route::currentRouteName() == 'categories.create') ? 'text-success' : '' }}">
+								<a href="{{ route('categories.index') }}" 
+								class="nav-link {{ ( Route::currentRouteName() == 'categories.index' 
+								                || Route::currentRouteName() == 'categories.create' 
+												|| Route::currentRouteName() == 'categories.edit') ? 'text-success' : '' }}">
 									<i class="nav-icon fas fa-file-alt"></i>
-									<p class="{{(Route::currentRouteName() == 'categories.index' || Route::currentRouteName() == 'categories.create') ? 'text-success' : 'text-muted' }}">Category</p>
+									<p class="{{(Route::currentRouteName() == 'categories.index' 
+									          || Route::currentRouteName() == 'categories.create'
+											  || Route::currentRouteName() == 'categories.edit') ? 'text-success' : 'text-muted' }}">Category</p>
 								</a>
 							</li>
 							<li class="nav-item">
@@ -48,9 +53,14 @@
 								</a>
 							</li>
 							<li class="nav-item">
-								<a href="products.html" class="nav-link">
+								<a href="{{ route('products.index') }}" 
+								class="nav-link {{ (Route::currentRouteName() == 'products.index'
+								                || Route::currentRouteName() == 'products.create'
+								                || Route::currentRouteName() == 'products.edit') ? 'text-success' : '' }}">
 									<i class="nav-icon fas fa-tag"></i>
-									<p class="text-muted">Products</p>
+									<p class="{{(Route::currentRouteName() == 'products.index' 
+									           || Route::currentRouteName() == 'products.create' 
+											   || Route::currentRouteName() == 'products.edit') ? 'text-success': 'text-muted'}}">Products</p>
 								</a>
 							</li>
 							

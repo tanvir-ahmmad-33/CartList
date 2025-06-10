@@ -20,10 +20,34 @@
 	<div class="container-fluid">
 
 	    @if (session('category_created'))
-            <div id="createCategoryMessage" class="alert alert-success text-center" role="alert">
+            <div id="categoryMessage" class="alert alert-success text-center" role="alert">
                 <i class="fas fa-check-circle text-dark mr-2" style="font-size: 2rem;"></i>
                 <strong class="mr-2" style="font-size: 2rem;">Success!</strong>  <br>
                 <span>Category added successfully</span>
+			</div>
+        @endif
+
+		@if (session('found_category_error'))
+		    <div id="categoryMessage" class="alert alert-danger text-center" role="alert">
+				<i class="fas fa-times-circle text-dark mr-2" style="font-size: 2rem;"></i>
+                <strong class="mr-2" style="font-size: 2rem;">Error!</strong>  <br>
+                <span>Category is not found</span>
+			</div>
+		@endif
+		
+		@if (session('category_updated'))
+		    <div id="categoryMessage" class="alert alert-success text-center" role="alert">
+				<i class="fas fa-check-circle text-dark mr-2" style="font-size: 2rem;"></i>
+                <strong class="mr-2" style="font-size: 2rem;">Success!</strong>  <br>
+                <span>Category updated successfully</span>
+			</div>
+		@endif
+
+		@if (session('category_deleted'))
+            <div id="categoryMessage" class="alert alert-success text-center" role="alert">
+                <i class="fas fa-check-circle text-dark mr-2" style="font-size: 2rem;"></i>
+                <strong class="mr-2" style="font-size: 2rem;">Success!</strong>  <br>
+                <span>Category deleted successfully</span>
 			</div>
         @endif
 
@@ -75,8 +99,8 @@
                                     @endif
                                 </td>
                                 <td>
-                                    <a href="#" class="btn btn-warning btn-sm"><i class="fa-solid fa-pencil"></i> Edit</a>
-                                    <a href="#" class="btn btn-danger btn-sm"><i class="fa-solid fa-trash"></i> Delete</a>
+                                    <a href="" class="btn btn-warning btn-sm editbtn" data-id="{{ $category->id }}" data-name="{{ $category->name }}"><i class="fa-solid fa-pencil"></i><span class="p-1">Edit</span></a>
+                                    <a href="" class="btn btn-danger btn-sm deletebtn" data-id="{{ $category->id }}" data-name="{{ $category->name }}"><i class="fa-solid fa-trash"></i><span class="p-1">Delete</span></a>
                                 </td>
                             </tr>
                             @endforeach
@@ -106,11 +130,76 @@
 	});
 
 	$(document).ready(function() {
-        if ($('#createCategoryMessage').length > 0) {
+        if ($('#categoryMessage').length > 0) {
             setTimeout(function() {
-                $('#createCategoryMessage').fadeOut('slow'); 
+                $('#categoryMessage').fadeOut('slow'); 
 		    }, 4000);
         }
     });
+
+	$(document).on('click', '.editbtn', function(e) {
+		e.preventDefault();
+		
+		
+		let categoryId = $(this).attr('data-id');
+		let categoryName = $(this).attr('data-name');
+
+		Swal.fire({
+            title: 'Are you sure?',
+            html: `Do you want to edit the category <br><strong>${categoryName} ?</strong><br>`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes',
+            cancelButtonText: 'No',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                let editUrl = "{{ route('categories.edit', ['id' => ':id']) }}".replace(':id', categoryId);
+                window.location.href = editUrl;
+            }
+        });
+	});
+
+
+	$(document).on('click', '.deletebtn', function(e) {
+		e.preventDefault();
+		
+		let categoryId = $(this).attr('data-id');
+		let categoryName = $(this).attr('data-name');
+
+		Swal.fire({
+            title: 'Are you sure?',
+            html: `Do you want to delete the category <br><strong>${categoryName} ?</strong><br>`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'No, cancel',
+            reverseButtons: true
+        }).then((result) => {
+			if(result.isConfirmed) {
+				$.ajax({
+					url: "{{ route('categories.destroy', ['id' => ':id']) }}".replace(':id', categoryId),
+			        type: 'delete',
+			        dataType: 'json',
+			        success: function(result) {
+				        window.location.href = '{{ route("categories.index") }}';
+			        }, error: function(jqXHR, textStatus, errorThrown) {
+						Swal.fire({
+                            icon: 'error',
+                            title: 'Server error',
+                            html: 'Failed to delete category.<br/>Please try again later.',
+                            timer: 3000,
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timerProgressBar: true,
+                            background: '#f8d7da',
+                            }).then(() => {
+							window.location.href = '{{ route("categories.index") }}';
+						});
+					}
+				});
+			}
+		});
+	});
 </script>
 @endpush

@@ -4,10 +4,11 @@ namespace App\Http\Controllers\admin;
 
 use App\Models\Category;
 use Illuminate\Http\Request;
+use App\Services\CategoryService;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\Category\StoreCategoryRequest;
-use App\Services\CategoryService;
 
 class CategoryController extends Controller
 {
@@ -54,17 +55,74 @@ class CategoryController extends Controller
     }
 
     // edit
-    public function edit() {
+    public function edit($id) {
+        $validCategory = $this->categoryService->validCategory($id);
 
+        if($validCategory) {
+            $category = $this->categoryService->getCategoryById($id);
+
+            if(!empty($category->image)) {
+                $category->image_id = $category->image;
+            } else {
+                $category->image_id = null;
+            }
+
+            return view('admin.category.edit',[
+                'title' => 'CartList | Category-edit',
+                'category' => $category,
+            ]);
+        } else {
+            session()->flash('found_category_error', true);
+            return redirect()->route('categories.index');
+        }
     }
 
     // update
-    public function update() {
+    public function update(StoreCategoryRequest $request, $id) {
+        $response = [
+            'status' => false,
+            'message' => '',
+        ];
 
+        $categoryData = $request->getCategoryData();
+        $category = $this->categoryService->updateCategory($categoryData, $id);
+
+        if($category) {
+            $response['status'] = true;
+            $response['message'] = 'Category updated successfully!';
+
+            session()->flash('category_updated', true);
+        } else {
+            $response['message'] = 'Failed to update category. Please try again later.';
+        }
+
+        return response()->json($response);
     }
 
     // destroy
-    public function destroy() {
+    public function destroy($id) {
+        $response = [
+            'status' => false,
+            'message' => '',
+        ];
 
+        $category = $this->categoryService->validCategory($id);
+
+        if($category) {
+            $categoryDelete = $this->categoryService->deleteCategory($id);
+
+            if($categoryDelete) {
+                $response['status'] = true;
+                $response['message'] = 'Category deleted successfully';
+
+                session()->flash('category_deleted', true);
+            } else {
+                $response['message'] = 'Failed to delete category. Please try again later.';
+            }
+
+            return response()->json($response);
+        } else {
+            session()->flash('found_category_error', true);
+        }
     }
 }

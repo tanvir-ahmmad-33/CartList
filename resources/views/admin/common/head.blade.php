@@ -16,6 +16,7 @@
 		<!-- Theme style -->
 		<link rel="stylesheet" href="{{ asset('assets/admin-assets/css/adminlte.min.css') }}">
 		<link rel="stylesheet" href="{{ asset('assets/admin-assets/plugins/dropzone/min/dropzone.min.css') }}">
+		<link rel="stylesheet" href="{{ asset('assets/admin-assets/plugins/summernote/summernote.min.css') }}">
 		<link rel="stylesheet" href="{{ asset('assets/admin-assets/css/custom.css') }}">
 
 		<meta name="csrf-token" content="{{ csrf_token() }}">

@@ -8,6 +8,7 @@
 <script src="{{ asset('assets/admin-assets/js/demo.js') }}"></script>
 
 <script src="{{ asset('assets/admin-assets/plugins/dropzone/min/dropzone.min.js') }}"></script>
+<script src="{{ asset('assets/admin-assets/plugins/summernote/summernote.min.js') }}"></script>
 
 <!-- sweet Alert -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -17,5 +18,11 @@
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
+    });
+
+    $(document).ready(function() {
+        $(".summernote").summernote({
+            height:250
+        });
     });
 </script>

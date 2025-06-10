@@ -41,7 +41,6 @@
                         <div class="col-md-6">
 						    <div class="mb-3">
                                 <input type="hidden" id="image_id" name="image_id" value="">
-                                <input type="hidden" id="image_extension" name="image_extension" value="">
 							    <label for="image">Image</label>
 							    <div id="image" class="dropzone dz-clickable">
                                     <div class="dz-message needsclick">
@@ -89,7 +88,6 @@
         let slug = $('#slug').val();
         let status = $('#status').val();
         let imageId = $('#image_id').val() ? $('#image_id').val() : '';
-        let imageExt = $('#image_extension').val() ? $('#image_extension').val() : '';
 
    
         let data = {
@@ -100,7 +98,6 @@
 
         if (imageId) {
             data.image_id = imageId;
-            data.image_extension = imageExt;
         }
         
 
@@ -213,8 +210,6 @@
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }, success: function(file, result){
             $("#image_id").val(result.image_id);
-            let fileExtension = file.name.split('.').pop().toLowerCase();
-            $("#image_extension").val(fileExtension);
         }
     });
 </script>
